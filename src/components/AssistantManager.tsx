@@ -52,7 +52,7 @@ const AssistantManager: React.FC = () => {
           {assistants.map((assistant: { name: string; prompt: string; apiKey: string }, index: number) => {
             console.log(`Rendering assistant-${index}`);
             return (
-              <div key={index} onClick={() => handleSwitchAssistant(assistant)} devin-id={`assistant-${index}`}>
+              <div key={index} onClick={() => handleSwitchAssistant(assistant)} data-testid={`assistant-${index}`}>
                 <Text>{assistant.name}</Text>
                 <Text fontSize="sm">{assistant.prompt}</Text>
               </div>
