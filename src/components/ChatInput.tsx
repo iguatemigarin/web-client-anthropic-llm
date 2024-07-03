@@ -46,6 +46,11 @@ const ChatInput: React.FC = () => {
 
       const data = await response.json();
       console.log('Response data:', data);
+
+      if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
+        throw new Error('Invalid response format: choices array is missing or empty');
+      }
+
       const assistantMessage = data.choices[0].text.trim();
 
       // Update the chat messages in the context
