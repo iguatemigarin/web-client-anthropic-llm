@@ -16,6 +16,7 @@ const AssistantManager: React.FC = () => {
     if (newAssistant.trim() !== '' && newPrompt.trim() !== '' && newApiKey.trim() !== '') {
       const newAssistantData = { name: newAssistant, prompt: newPrompt, apiKey: newApiKey };
       setAssistants([...assistants, newAssistantData]);
+      console.log('Added new assistant:', newAssistantData);
       setNewAssistant('');
       setNewPrompt('');
       setNewApiKey('');
