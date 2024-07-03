@@ -6,18 +6,20 @@ const AssistantManager: React.FC = () => {
   const { assistants, setAssistants, setCurrentAssistant } = useAppContext();
   const [newAssistant, setNewAssistant] = useState('');
   const [newPrompt, setNewPrompt] = useState('');
+  const [newApiKey, setNewApiKey] = useState('');
 
   const handleAddAssistant = () => {
-    if (newAssistant.trim() !== '' && newPrompt.trim() !== '') {
-      const newAssistantData = { name: newAssistant, prompt: newPrompt };
+    if (newAssistant.trim() !== '' && newPrompt.trim() !== '' && newApiKey.trim() !== '') {
+      const newAssistantData = { name: newAssistant, prompt: newPrompt, apiKey: newApiKey };
       setAssistants([...assistants, newAssistantData]);
       setNewAssistant('');
       setNewPrompt('');
+      setNewApiKey('');
     }
   };
 
-  const handleSwitchAssistant = (assistantName: string) => {
-    setCurrentAssistant(assistantName);
+  const handleSwitchAssistant = (assistant: { name: string; prompt: string; apiKey: string }) => {
+    setCurrentAssistant(assistant);
   };
 
   return (
@@ -33,13 +35,18 @@ const AssistantManager: React.FC = () => {
           onChange={(e) => setNewPrompt(e.target.value)}
           placeholder="Enter system prompt for the new assistant..."
         />
+        <Input
+          value={newApiKey}
+          onChange={(e) => setNewApiKey(e.target.value)}
+          placeholder="Enter API key for the new assistant..."
+        />
         <Button onClick={handleAddAssistant} colorScheme="teal">
           Add Assistant
         </Button>
         <Box>
           <Text fontWeight="bold">Available Assistants:</Text>
-          {assistants.map((assistant: { name: string; prompt: string }, index: number) => (
-            <Box key={index} onClick={() => handleSwitchAssistant(assistant.name)}>
+          {assistants.map((assistant: { name: string; prompt: string; apiKey: string }, index: number) => (
+            <Box key={index} onClick={() => handleSwitchAssistant(assistant)}>
               <Text>{assistant.name}</Text>
               <Text fontSize="sm">{assistant.prompt}</Text>
             </Box>
