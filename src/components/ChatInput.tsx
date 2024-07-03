@@ -14,6 +14,7 @@ const ChatInput: React.FC = () => {
 
     // Send the message to the Anthropic LLM API
     try {
+      console.log('Sending request to Anthropic LLM API...');
       const response = await fetch('https://api.anthropic.com/v1/complete', {
         method: 'POST',
         headers: {
@@ -26,7 +27,9 @@ const ChatInput: React.FC = () => {
         }),
       });
 
+      console.log('Response received from Anthropic LLM API:', response);
       const data = await response.json();
+      console.log('Response data:', data);
       const assistantMessage = data.choices[0].text.trim();
 
       // Update the chat messages in the context
