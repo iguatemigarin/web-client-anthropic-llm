@@ -25,9 +25,10 @@ const ChatInput: React.FC = () => {
       };
       console.log('Request body:', requestBody);
 
-      const apiUrl = 'https://api.anthropic.com/v1/complete';
+      const apiUrl = 'http://localhost:3001/proxy';
       console.log('API URL:', apiUrl);
 
+      console.log('Before fetch call');
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -36,6 +37,7 @@ const ChatInput: React.FC = () => {
         },
         body: JSON.stringify(requestBody),
       });
+      console.log('After fetch call');
 
       console.log('Response received from Anthropic LLM API:', response);
       if (!response.ok) {
@@ -68,7 +70,7 @@ const ChatInput: React.FC = () => {
         placeholder="Type your message here..."
         mr={2}
       />
-      <Button onClick={handleSendMessage} colorScheme="teal">
+      <Button onClick={() => { console.log('Send button clicked'); handleSendMessage(); }} colorScheme="teal" isDisabled={!currentAssistant}>
         Send
       </Button>
     </Box>

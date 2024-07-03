@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Input, VStack, Text, Textarea } from '@chakra-ui/react';
 import { useAppContext } from '../contexts/AppContext';
 
@@ -7,6 +7,10 @@ const AssistantManager: React.FC = () => {
   const [newAssistant, setNewAssistant] = useState('');
   const [newPrompt, setNewPrompt] = useState('');
   const [newApiKey, setNewApiKey] = useState('');
+
+  useEffect(() => {
+    console.log('Assistants:', assistants);
+  }, [assistants]);
 
   const handleAddAssistant = () => {
     if (newAssistant.trim() !== '' && newPrompt.trim() !== '' && newApiKey.trim() !== '') {
@@ -46,7 +50,7 @@ const AssistantManager: React.FC = () => {
         <Box>
           <Text fontWeight="bold">Available Assistants:</Text>
           {assistants.map((assistant: { name: string; prompt: string; apiKey: string }, index: number) => (
-            <Box key={index} onClick={() => handleSwitchAssistant(assistant)} data-devin-id={`assistant-${index}`}>
+            <Box key={index} onClick={() => handleSwitchAssistant(assistant)} devin-id={`assistant-${index}`}>
               <Text>{assistant.name}</Text>
               <Text fontSize="sm">{assistant.prompt}</Text>
             </Box>
