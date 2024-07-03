@@ -54,10 +54,10 @@ const AssistantManager: React.FC = () => {
           {assistants.map((assistant: { name: string; prompt: string; apiKey: string }, index: number) => {
             console.log(`Rendering assistant-${index}`);
             return (
-              <div key={index} onClick={() => handleSwitchAssistant(assistant)} devin-id={`assistant-${index}`}>
+              <Button key={index} onClick={() => handleSwitchAssistant(assistant)} devin-id={`assistant-${index}`} variant="outline" colorScheme="teal" width="100%">
                 <Text>{assistant.name}</Text>
                 <Text fontSize="sm">{assistant.prompt}</Text>
-              </div>
+              </Button>
             );
           })}
         </Box>
