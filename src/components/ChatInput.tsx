@@ -7,7 +7,11 @@ const ChatInput: React.FC = () => {
   const { currentAssistant, setChatMessages, chatMessages } = useAppContext();
 
   const handleSendMessage = async () => {
-    if (message.trim() === '' || !currentAssistant) return;
+    console.log('handleSendMessage function entered');
+    if (message.trim() === '' || !currentAssistant) {
+      console.log('Early return: message is empty or currentAssistant is missing');
+      return;
+    }
 
     // Placeholder function to handle sending the message
     console.log('Message sent:', message);
@@ -15,19 +19,29 @@ const ChatInput: React.FC = () => {
     // Send the message to the Anthropic LLM API
     try {
       console.log('Sending request to Anthropic LLM API...');
-      const response = await fetch('https://api.anthropic.com/v1/complete', {
+      const requestBody = {
+        prompt: `${currentAssistant.prompt}\nUser: ${message}\nAssistant:`,
+        max_tokens: 100,
+      };
+      console.log('Request body:', requestBody);
+
+      const apiUrl = 'https://api.anthropic.com/v1/complete';
+      console.log('API URL:', apiUrl);
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${currentAssistant.apiKey}`,
         },
-        body: JSON.stringify({
-          prompt: `${currentAssistant.prompt}\nUser: ${message}\nAssistant:`,
-          max_tokens: 100,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       console.log('Response received from Anthropic LLM API:', response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       console.log('Response data:', data);
       const assistantMessage = data.choices[0].text.trim();
