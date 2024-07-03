@@ -23,6 +23,7 @@ const AssistantManager: React.FC = () => {
   };
 
   const handleSwitchAssistant = (assistant: { name: string; prompt: string; apiKey: string }) => {
+    console.log('Switching to assistant:', assistant);
     setCurrentAssistant(assistant);
   };
 
