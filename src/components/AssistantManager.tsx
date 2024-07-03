@@ -49,12 +49,15 @@ const AssistantManager: React.FC = () => {
         </Button>
         <Box>
           <Text fontWeight="bold">Available Assistants:</Text>
-          {assistants.map((assistant: { name: string; prompt: string; apiKey: string }, index: number) => (
-            <Box key={index} onClick={() => handleSwitchAssistant(assistant)} devin-id={`assistant-${index}`}>
-              <Text>{assistant.name}</Text>
-              <Text fontSize="sm">{assistant.prompt}</Text>
-            </Box>
-          ))}
+          {assistants.map((assistant: { name: string; prompt: string; apiKey: string }, index: number) => {
+            console.log(`Rendering assistant-${index}`);
+            return (
+              <div key={index} onClick={() => handleSwitchAssistant(assistant)} devin-id={`assistant-${index}`}>
+                <Text>{assistant.name}</Text>
+                <Text fontSize="sm">{assistant.prompt}</Text>
+              </div>
+            );
+          })}
         </Box>
         <Box>
           <Text fontWeight="bold">Current Assistant:</Text>
