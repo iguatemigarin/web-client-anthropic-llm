@@ -33,7 +33,7 @@ const ChatInput: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${currentAssistant.apiKey}`,
+          'x-api-key': `${currentAssistant.apiKey}`,
         },
         body: JSON.stringify(requestBody),
       });
@@ -47,11 +47,11 @@ const ChatInput: React.FC = () => {
       const data = await response.json();
       console.log('Response data:', data);
 
-      if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
-        throw new Error('Invalid response format: choices array is missing or empty');
+      if (!data.content || !Array.isArray(data.content) || data.content.length === 0) {
+        throw new Error('Invalid response format: content array is missing or empty');
       }
 
-      const assistantMessage = data.choices[0].text.trim();
+      const assistantMessage = data.content[0].text.trim();
 
       // Update the chat messages in the context
       const newMessages: ChatMessage[] = [
