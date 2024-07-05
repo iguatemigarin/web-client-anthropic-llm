@@ -13,21 +13,28 @@ const ChatInput: React.FC = () => {
     setChatMessages([...chatMessages, newMessage]);
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/complete', {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-api-key': currentAssistant.apiKey,
         },
         body: JSON.stringify({
-          prompt: `${currentAssistant.prompt}\nUser: ${inputValue}\nAssistant:`,
+          model: 'claude-v1', // Replace with the appropriate model name
+          messages: [
+            ...chatMessages.map((msg) => ({
+              role: msg.sender,
+              content: msg.text,
+            })),
+            { role: 'user', content: inputValue },
+          ],
           max_tokens: 100,
         }),
       });
 
       const data = await response.json();
-      if (data.choices && data.choices.length > 0) {
-        const assistantMessage: ChatMessage = { sender: 'assistant', text: data.choices[0].text };
+      if (data.content) {
+        const assistantMessage: ChatMessage = { sender: 'assistant', text: data.content };
         setChatMessages([...chatMessages, newMessage, assistantMessage]);
       }
     } catch (error) {
