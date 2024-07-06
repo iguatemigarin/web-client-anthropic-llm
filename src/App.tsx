@@ -1,9 +1,9 @@
-import React from 'react';
-import { ChakraProvider, Box } from '@chakra-ui/react';
-import { AppProvider } from './contexts/AppContext';
-import AssistantManager from './components/AssistantManager';
-import ChatDisplay from './components/ChatDisplay';
-import ChatInput from './components/ChatInput';
+import React from "react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
+import { AppProvider } from "./contexts/AppContext";
+import AssistantManager from "./components/AssistantManager";
+import ChatDisplay from "./components/ChatDisplay";
+import ChatInput from "./components/ChatInput";
 
 function App() {
   return (

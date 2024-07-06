@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface Assistant {
   name: string;
@@ -7,7 +7,7 @@ interface Assistant {
 }
 
 interface ChatMessage {
-  sender: 'user' | 'assistant';
+  sender: "user" | "assistant";
   text: string;
 }
 
@@ -22,9 +22,13 @@ interface AppContextProps {
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
-  const [currentAssistant, setCurrentAssistant] = useState<Assistant | null>(null);
+  const [currentAssistant, setCurrentAssistant] = useState<Assistant | null>(
+    null
+  );
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
   return (
@@ -46,7 +50,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 export const useAppContext = (): AppContextProps => {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error('useAppContext must be used within an AppProvider');
+    throw new Error("useAppContext must be used within an AppProvider");
   }
   return context;
 };

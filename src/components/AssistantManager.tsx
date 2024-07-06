@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Input } from '@chakra-ui/react';
-import { useAppContext } from '../contexts/AppContext';
+import React, { useEffect, useState } from "react";
+import { Box, Button, Input } from "@chakra-ui/react";
+import { useAppContext } from "../contexts/AppContext";
 
 const AssistantManager: React.FC = () => {
-  const { assistants, setAssistants, currentAssistant, setCurrentAssistant } = useAppContext();
-  const [newAssistantName, setNewAssistantName] = useState('');
-  const [newAssistantPrompt, setNewAssistantPrompt] = useState('');
-  const [newAssistantApiKey, setNewAssistantApiKey] = useState('');
+  const { assistants, setAssistants, currentAssistant, setCurrentAssistant } =
+    useAppContext();
+  const [newAssistantName, setNewAssistantName] = useState("");
+  const [newAssistantPrompt, setNewAssistantPrompt] = useState("");
+  const [newAssistantApiKey, setNewAssistantApiKey] = useState("");
 
   const handleAddAssistant = () => {
-    const newAssistant = { name: newAssistantName, prompt: newAssistantPrompt, apiKey: newAssistantApiKey };
+    const newAssistant = {
+      name: newAssistantName,
+      prompt: newAssistantPrompt,
+      apiKey: newAssistantApiKey,
+    };
     setAssistants([...assistants, newAssistant]);
-    console.log('Assistants after addition:', [...assistants, newAssistant]);
-    setNewAssistantName('');
-    setNewAssistantPrompt('');
-    setNewAssistantApiKey('');
+    console.log("Assistants after addition:", [...assistants, newAssistant]);
+    setNewAssistantName("");
+    setNewAssistantPrompt("");
+    setNewAssistantApiKey("");
   };
 
   const handleSelectAssistant = (index: number) => {
@@ -22,7 +27,7 @@ const AssistantManager: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('Current Assistant:', currentAssistant);
+    console.log("Current Assistant:", currentAssistant);
   }, [currentAssistant]);
 
   return (
@@ -42,7 +47,9 @@ const AssistantManager: React.FC = () => {
         value={newAssistantApiKey}
         onChange={(e) => setNewAssistantApiKey(e.target.value)}
       />
-      <Button onClick={handleAddAssistant} devin-id="0">Add Assistant</Button>
+      <Button onClick={handleAddAssistant} devin-id="0">
+        Add Assistant
+      </Button>
       {assistants.map((assistant, index) => (
         <Button
           key={index}
@@ -58,9 +65,14 @@ const AssistantManager: React.FC = () => {
             placeholder="Assistant Prompt"
             value={currentAssistant.prompt}
             onChange={(e) => {
-              const updatedAssistant = { ...currentAssistant, prompt: e.target.value };
+              const updatedAssistant = {
+                ...currentAssistant,
+                prompt: e.target.value,
+              };
               const updatedAssistants = assistants.map((assistant, i) =>
-                i === assistants.indexOf(currentAssistant) ? updatedAssistant : assistant
+                i === assistants.indexOf(currentAssistant)
+                  ? updatedAssistant
+                  : assistant
               );
               setAssistants(updatedAssistants);
             }}
@@ -69,9 +81,14 @@ const AssistantManager: React.FC = () => {
             placeholder="API Key"
             value={currentAssistant.apiKey}
             onChange={(e) => {
-              const updatedAssistant = { ...currentAssistant, apiKey: e.target.value };
+              const updatedAssistant = {
+                ...currentAssistant,
+                apiKey: e.target.value,
+              };
               const updatedAssistants = assistants.map((assistant, i) =>
-                i === assistants.indexOf(currentAssistant) ? updatedAssistant : assistant
+                i === assistants.indexOf(currentAssistant)
+                  ? updatedAssistant
+                  : assistant
               );
               setAssistants(updatedAssistants);
             }}
