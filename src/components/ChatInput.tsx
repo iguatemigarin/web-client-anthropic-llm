@@ -16,11 +16,13 @@ const ChatInput: React.FC = () => {
       const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "content-type": "application/json",
           "x-api-key": currentAssistant.apiKey,
+          "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-v1", // Replace with the appropriate model name
+          model: "claude-3-5-sonnet-20240620",
+          system: currentAssistant.prompt,
           messages: [
             ...chatMessages.map((msg) => ({
               role: msg.sender,
