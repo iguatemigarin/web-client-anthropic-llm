@@ -7,3 +7,4 @@ deploy:
 	git add --all
 	git commit -m Build
 	git push --force origin gh-pages
+	git checkout main
