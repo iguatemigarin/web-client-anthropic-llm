@@ -1,4 +1,4 @@
-.PHONY
+.PHONY: deploy
 deploy:
 	git checkout gh-pages
 	git reset --hard main
