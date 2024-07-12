@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+
 self.addEventListener('message', async (event) => {
   const { currentAssistant, chatMessages, inputValue } = event.data;
 
@@ -29,3 +31,5 @@ self.addEventListener('message', async (event) => {
     self.postMessage({ success: false, error: error.message });
   }
 });
+
+/* eslint-enable no-restricted-globals */
