@@ -1,49 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Input, Button } from "@chakra-ui/react";
 import { useAppContext, ChatMessage } from "../contexts/AppContext";
 
 const ChatInput: React.FC = () => {
   const { currentAssistant, chatMessages, setChatMessages } = useAppContext();
   const [inputValue, setInputValue] = useState("");
+  const [worker, setWorker] = useState<Worker | null>(null);
 
-  const handleSendMessage = async () => {
+  useEffect(() => {
+    const newWorker = new Worker(new URL('../apiWorker.js', import.meta.url));
+    setWorker(newWorker);
+
+    newWorker.onmessage = (event) => {
+      const { success, data, error } = event.data;
+      if (success) {
+        const assistantMessage: ChatMessage = {
+          sender: "assistant",
+          text: data.content,
+        };
+        setChatMessages((prevMessages) => [...prevMessages, assistantMessage]);
+      } else {
+        console.error("Error from web worker:", error);
+      }
+    };
+
+    return () => {
+      newWorker.terminate();
+    };
+  }, [setChatMessages]);
+
+  const handleSendMessage = () => {
     if (!currentAssistant) return;
 
     const newMessage: ChatMessage = { sender: "user", text: inputValue };
     setChatMessages([...chatMessages, newMessage]);
 
-    try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "x-api-key": currentAssistant.apiKey,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-3-5-sonnet-20240620",
-          system: currentAssistant.prompt,
-          messages: [
-            ...chatMessages.map((msg) => ({
-              role: msg.sender,
-              content: msg.text,
-            })),
-            { role: "user", content: inputValue },
-          ],
-          max_tokens: 100,
-        }),
+    if (worker) {
+      worker.postMessage({
+        currentAssistant,
+        chatMessages,
+        inputValue,
       });
-
-      const data = await response.json();
-      if (data.content) {
-        const assistantMessage: ChatMessage = {
-          sender: "assistant",
-          text: data.content,
-        };
-        setChatMessages([...chatMessages, newMessage, assistantMessage]);
-      }
-    } catch (error) {
-      console.error("Error:", error);
     }
 
     setInputValue("");
